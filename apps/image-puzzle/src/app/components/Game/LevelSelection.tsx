@@ -12,7 +12,7 @@ const LevelSelection: React.FC = () => {
     const fetchPuzzles = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`http://localhost:3333/api/puzzles/${level}`);
+        const { data } = await axios.get(`https://puzzle-api-z48f.onrender.com/api/puzzles/${level}`);
         setPuzzles(data);
       } catch (error) {
         console.error('Failed to fetch puzzles', error);
@@ -46,7 +46,7 @@ const LevelSelection: React.FC = () => {
         ) : (
           <>
             {puzzles.map((p) => {
-              const normalizedUrl = p.imageUrl.startsWith('http') ? p.imageUrl : `http://localhost:3333${p.imageUrl}`;
+              const normalizedUrl = p.imageUrl.startsWith('http') ? p.imageUrl : `https://puzzle-api-z48f.onrender.com${p.imageUrl}`;
               return (
                 <div key={p.id} className="puzzle-card" onClick={() => navigate(`/play/${p.id}`)}>
                   <div className="puzzle-thumb" style={{ backgroundImage: `url(${normalizedUrl})` }}>

@@ -15,7 +15,7 @@ const Register: React.FC = () => {
     setError('');
     setSuccess('');
     try {
-      await axios.post('http://localhost:3333/api/auth/register', { username, password });
+      await axios.post('https://puzzle-api-z48f.onrender.com/api/auth/register', { username, password });
       setSuccess('Your account has been successfully created!');
       setTimeout(() => {
         navigate('/login');

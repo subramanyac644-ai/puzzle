@@ -19,7 +19,7 @@ const Leaderboard: React.FC = () => {
     const fetchRankings = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`http://localhost:3333/api/leaderboard/${level}`);
+        const { data } = await axios.get(`https://puzzle-api-z48f.onrender.com/api/leaderboard/${level}`);
         setRankings(data);
       } catch (error) {
         console.error('Failed to fetch rankings', error);

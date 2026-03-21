@@ -12,7 +12,7 @@ async function test() {
     
     const token = 'dummy_token'; // Even with a dummy token it should return 401, not 404 or nothing
     try {
-      await axios.post('http://localhost:3333/api/user/puzzles', form, {
+      await axios.post('https://puzzle-api-z48f.onrender.com/api/user/puzzles', form, {
         headers: {
           ...form.getHeaders(),
           Authorization: `Bearer ${token}`

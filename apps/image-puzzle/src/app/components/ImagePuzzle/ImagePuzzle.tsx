@@ -232,7 +232,7 @@ const ImagePuzzle: React.FC<ImagePuzzleProps> = ({ externalImage, level, puzzleI
     const token = localStorage.getItem('token');
     if (token && puzzleId) {
       try {
-        await axios.post('http://localhost:3333/api/scores', {
+        await axios.post('https://puzzle-api-z48f.onrender.com/api/scores', {
           puzzleId,
           score: currentScore,
           level: diffObj?.label.toLowerCase() || 'easy'
@@ -262,7 +262,7 @@ const ImagePuzzle: React.FC<ImagePuzzleProps> = ({ externalImage, level, puzzleI
   const handleNextPuzzle = async () => {
     if (!level) return;
     try {
-      const { data } = await axios.get(`http://localhost:3333/api/puzzles/${level}`);
+      const { data } = await axios.get(`https://puzzle-api-z48f.onrender.com/api/puzzles/${level}`);
       // Sort puzzles by registration order (createdAt)
       const sorted = data.sort((a: any, b: any) => 
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()

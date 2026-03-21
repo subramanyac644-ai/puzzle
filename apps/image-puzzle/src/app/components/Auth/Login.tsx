@@ -16,7 +16,7 @@ const Login: React.FC = () => {
     e.preventDefault();
     setError('');
     try {
-      const { data } = await axios.post<AuthResponse>('http://localhost:3333/api/auth/login', { username, password });
+      const { data } = await axios.post<AuthResponse>('https://puzzle-api-z48f.onrender.com/api/auth/login', { username, password });
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       navigate('/dashboard');

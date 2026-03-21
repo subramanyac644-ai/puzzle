@@ -37,7 +37,7 @@ const AdminDashboard: React.FC = () => {
     setFetching(true);
     const token = localStorage.getItem('token');
     try {
-      const { data } = await axios.get('http://localhost:3333/api/admin/puzzles', {
+      const { data } = await axios.get('https://puzzle-api-z48f.onrender.com/api/admin/puzzles', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPuzzles(data);
@@ -52,7 +52,7 @@ const AdminDashboard: React.FC = () => {
     setFetchingUsers(true);
     const token = localStorage.getItem('token');
     try {
-      const { data } = await axios.get('http://localhost:3333/api/admin/users', {
+      const { data } = await axios.get('https://puzzle-api-z48f.onrender.com/api/admin/users', {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(data);
@@ -110,7 +110,7 @@ const AdminDashboard: React.FC = () => {
     formData.append('level', level);
 
     try {
-      await axios.post('http://localhost:3333/api/admin/puzzles', 
+      await axios.post('https://puzzle-api-z48f.onrender.com/api/admin/puzzles', 
         formData,
         { headers: { 
           'Authorization': `Bearer ${token}`,
@@ -131,7 +131,7 @@ const AdminDashboard: React.FC = () => {
   const handleDelete = async (id: string) => {
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`http://localhost:3333/api/admin/puzzles/${id}`, {
+      await axios.delete(`https://puzzle-api-z48f.onrender.com/api/admin/puzzles/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('Puzzle deleted successfully!');
@@ -145,7 +145,7 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteUser = async (id: string) => {
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`http://localhost:3333/api/admin/users/${id}`, {
+      await axios.delete(`https://puzzle-api-z48f.onrender.com/api/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('User deleted successfully!');
@@ -222,7 +222,7 @@ const AdminDashboard: React.FC = () => {
             ) : (
               puzzles.map((p) => (
                 <div key={p.id} className="puzzle-item">
-                  <img src={p.imageUrl.startsWith('http') ? p.imageUrl : `http://localhost:3333${p.imageUrl}`} alt="Puzzle" className="puzzle-thumb" />
+                  <img src={p.imageUrl.startsWith('http') ? p.imageUrl : `https://puzzle-api-z48f.onrender.com${p.imageUrl}`} alt="Puzzle" className="puzzle-thumb" />
                   <div className="puzzle-info">
                     <span className={`badge badge-${p.level}`}>{p.level.toUpperCase()}</span>
                     <span className="p-id">ID: {p.id.substring(0, 8)}...</span>

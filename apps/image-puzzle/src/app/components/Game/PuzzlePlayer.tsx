@@ -14,7 +14,7 @@ const PuzzlePlayer: React.FC = () => {
     const fetchPuzzle = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`http://localhost:3333/api/puzzles/single/${id}`);
+        const { data } = await axios.get(`https://puzzle-api-z48f.onrender.com/api/puzzles/single/${id}`);
         setPuzzle(data);
       } catch (error) {
         console.error('Failed to fetch puzzle', error);
@@ -27,7 +27,7 @@ const PuzzlePlayer: React.FC = () => {
 
   const getImageUrl = (url: string) => {
     if (!url) return '';
-    return url.startsWith('http') ? url : `http://localhost:3333${url}`;
+    return url.startsWith('http') ? url : `https://puzzle-api-z48f.onrender.com${url}`;
   };
 
   if (loading) return <div className="loading">Loading puzzle...</div>;

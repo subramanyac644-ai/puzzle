@@ -16,7 +16,7 @@ const UserDashboard: React.FC = () => {
   const fetchPuzzles = useCallback(async () => {
     setLoading(true);
     try {
-      const { data } = await axios.get(`http://localhost:3333/api/puzzles/${level}`);
+      const { data } = await axios.get(`https://puzzle-api-z48f.onrender.com/api/puzzles/${level}`);
       setPuzzles(data);
     } catch (error) {
       console.error('Failed to fetch puzzles', error);
@@ -54,7 +54,7 @@ const UserDashboard: React.FC = () => {
     setUploading(true);
     try {
       const token = localStorage.getItem('token');
-      await axios.post('http://localhost:3333/api/user/puzzles', formData, {
+      await axios.post('https://puzzle-api-z48f.onrender.com/api/user/puzzles', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
           Authorization: `Bearer ${token}`
@@ -111,7 +111,7 @@ const UserDashboard: React.FC = () => {
         ) : (
           <>
             {puzzles.map((p) => {
-              const normalizedUrl = p.imageUrl.startsWith('http') ? p.imageUrl : `http://localhost:3333${p.imageUrl}`;
+              const normalizedUrl = p.imageUrl.startsWith('http') ? p.imageUrl : `https://puzzle-api-z48f.onrender.com${p.imageUrl}`;
               return (
                 <div key={p.id} className="puzzle-card" onClick={() => navigate(`/play/${p.id}`)}>
                   <div className="puzzle-card-inner">
