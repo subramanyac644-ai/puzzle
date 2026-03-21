@@ -1,0 +1,31 @@
+{
+  "name": "image-puzzle",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "apps/image-puzzle/src",
+  "projectType": "application",
+  "tags": [],
+  "// targets": "to see all targets run: nx show project image-puzzle --web",
+  "targets": {
+    "serve": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx vite apps/image-puzzle",
+        "cwd": "."
+      }
+    },
+    "build": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx vite build apps/image-puzzle",
+        "cwd": "."
+      }
+    },
+    "test": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "npx vitest run apps/image-puzzle",
+        "cwd": "."
+      }
+    }
+  }
+}

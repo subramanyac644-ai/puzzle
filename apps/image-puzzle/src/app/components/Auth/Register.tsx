@@ -1,0 +1,78 @@
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
+
+const Register: React.FC = () => {
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+    try {
+      await axios.post('http://localhost:3333/api/auth/register', { username, password });
+      setSuccess('Your account has been successfully created!');
+      setTimeout(() => {
+        navigate('/login');
+      }, 3000);
+    } catch (err: any) {
+      setError(err.response?.data?.error || 'Registration failed');
+    }
+  };
+
+  return (
+    <div className="auth-container">
+      <button className="back-btn auth-back" onClick={() => navigate('/')}>← Back home</button>
+      <div className="auth-card">
+        <h2>Register</h2>
+        {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message">{success}</div>}
+        <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label>Username</label>
+            <input 
+              type="text" 
+              value={username} 
+              onChange={(e) => setUsername(e.target.value)} 
+              required 
+              autoComplete="off"
+            />
+          </div>
+          <div className="form-group">
+            <label>Password</label>
+            <div className="password-input-container">
+              <input 
+                type={showPassword ? "text" : "password"} 
+                value={password} 
+                onChange={(e) => setPassword(e.target.value)} 
+                required 
+                autoComplete="new-password"
+              />
+              <button 
+                type="button" 
+                className="password-toggle"
+                onClick={() => setShowPassword(!showPassword)}
+                aria-label="Toggle password visibility"
+              >
+                {showPassword ? "👁️" : "👁️‍🗨️"}
+              </button>
+            </div>
+          </div>
+          <button type="submit" className="btn btn-primary" disabled={!!success}>Register</button>
+        </form>
+        <p className="auth-footer">
+          Already have an account? <Link to="/login">Login here</Link>
+          <br />
+          <Link to="/" className="back-link">← Back to home</Link>
+        </p>
+      </div>
+    </div>
+  );
+};
+
+export default Register;
