@@ -15,6 +15,7 @@ const Leaderboard: React.FC = () => {
   const [level, setLevel] = useState('easy');
   const [rankings, setRankings] = useState<Ranking[]>([]);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { user } = useAuth();
 
@@ -22,10 +23,12 @@ const Leaderboard: React.FC = () => {
     const fetchRankings = async () => {
       setLoading(true);
       try {
+        setError(null);
         const { data } = await axios.get(`${API_BASE_URL}/api/leaderboard/${level}`);
         setRankings(data);
-      } catch (error) {
+      } catch (error: any) {
         console.error('Failed to fetch rankings', error);
+        setError(error.message || 'Failed to fetch rankings');
       } finally {
         setLoading(false);
       }
@@ -53,6 +56,8 @@ const Leaderboard: React.FC = () => {
 
         {loading ? (
           <div className="loading">Loading rankings...</div>
+        ) : error ? (
+          <div className="error-message">Error: {error}</div>
         ) : (
           <table className="leaderboard-table">
             <thead>

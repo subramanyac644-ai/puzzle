@@ -45,9 +45,14 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const interceptor = axios.interceptors.response.use(
       (response) => response,
       (error) => {
+        // Only trigger session expired if we actually had a user
         if (error.response?.status === 401) {
-          setUser(null);
-          setSessionExpired(true);
+          setUser((prevUser) => {
+            if (prevUser) {
+              setSessionExpired(true);
+            }
+            return null;
+          });
           localStorage.removeItem('user');
           localStorage.removeItem('token');
         }
