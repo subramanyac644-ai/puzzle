@@ -8,6 +8,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
@@ -16,12 +17,17 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setSuccess('');
     setIsLoading(true);
     try {
       const { data } = await axios.post<AuthResponse>('https://puzzle-api-z48f.onrender.com/api/auth/login', { username, password });
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
-      navigate('/dashboard');
+      
+      setSuccess('Login successful! Redirecting...');
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1500);
     } catch (err: any) {
       setError(err.response?.data?.error || 'Login failed');
     } finally {
@@ -36,9 +42,10 @@ const Login: React.FC = () => {
         <h2>Login</h2>
         {logoutSuccess && <div className="success-message">You have been successfully logged out.</div>}
         {error && <div className="error-message">{error}</div>}
+        {success && <div className="success-message">{success}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Username</label>
+            <label>Username or Email</label>
             <input 
               type="text" 
               value={username} 

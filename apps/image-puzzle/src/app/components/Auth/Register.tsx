@@ -4,7 +4,9 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
@@ -15,9 +17,27 @@ const Register: React.FC = () => {
     e.preventDefault();
     setError('');
     setSuccess('');
+
+    if (!username || !email || !password || !confirmPassword) {
+      setError('All fields are required');
+      return;
+    }
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+      setError('Please enter a valid email address');
+      return;
+    }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long');
+      return;
+    }
+    if (password !== confirmPassword) {
+      setError('Passwords do not match');
+      return;
+    }
+
     setIsLoading(true);
     try {
-      const { data } = await axios.post('https://puzzle-api-z48f.onrender.com/api/auth/register', { username, password });
+      const { data } = await axios.post('https://puzzle-api-z48f.onrender.com/api/auth/register', { username, email, password });
       
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
@@ -52,6 +72,16 @@ const Register: React.FC = () => {
             />
           </div>
           <div className="form-group">
+            <label>Email</label>
+            <input 
+              type="email" 
+              value={email} 
+              onChange={(e) => setEmail(e.target.value)} 
+              required 
+              autoComplete="email"
+            />
+          </div>
+          <div className="form-group">
             <label>Password</label>
             <div className="password-input-container">
               <input 
@@ -69,6 +99,18 @@ const Register: React.FC = () => {
               >
                 {showPassword ? "👁️" : "👁️‍🗨️"}
               </button>
+            </div>
+          </div>
+          <div className="form-group">
+            <label>Confirm Password</label>
+            <div className="password-input-container">
+              <input 
+                type={showPassword ? "text" : "password"} 
+                value={confirmPassword} 
+                onChange={(e) => setConfirmPassword(e.target.value)} 
+                required 
+                autoComplete="new-password"
+              />
             </div>
           </div>
           <button type="submit" className="btn btn-primary" disabled={isLoading || !!success}>
