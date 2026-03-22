@@ -4,11 +4,5 @@
     "outDir": "../../../dist/out-tsc",
     "types": ["node"]
   },
-  "files": [],
-  "include": ["src/**/*.ts"],
-  "references": [
-    {
-      "path": "./tsconfig.lib.json"
-    }
-  ]
+  "include": ["src/**/*.ts"]
 }
