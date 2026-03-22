@@ -1,15 +1,18 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 
 const Navbar: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { user, logout } = useAuth();
 
   const handleLogout = async () => {
     await logout();
     navigate('/', { state: { logoutSuccess: true } });
   };
+
+  const isHomePage = location.pathname === '/';
 
   return (
     <nav className="navbar">
@@ -19,7 +22,7 @@ const Navbar: React.FC = () => {
       <ul className="navbar-links">
         {!user && <li><Link to="/">Home</Link></li>}
         {user && <li><Link to="/dashboard">Dashboard</Link></li>}
-        <li><Link to="/leaderboard">Leaderboard</Link></li>
+        {!isHomePage && <li><Link to="/leaderboard">Leaderboard</Link></li>}
         {user?.role === 'admin' && (
           <li><Link to="/admin">Admin</Link></li>
         )}
