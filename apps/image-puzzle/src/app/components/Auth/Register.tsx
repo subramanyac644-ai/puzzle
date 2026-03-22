@@ -32,14 +32,11 @@ const Register: React.FC = () => {
 
     setIsLoading(true);
     try {
-      const { data } = await axios.post('https://puzzle-api-z48f.onrender.com/api/auth/register', { username, password });
+      await axios.post('https://puzzle-api-z48f.onrender.com/api/auth/register', { username, password });
       
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
-      
-      setSuccess('Account created successfully! Redirecting...');
+      setSuccess('Account created successfully! Please login to continue.');
       setTimeout(() => {
-        navigate('/dashboard');
+        navigate('/login');
       }, 1500);
     } catch (err: any) {
       setError(err.response?.data?.error || 'Registration failed');

@@ -92,13 +92,7 @@ app.post('/api/auth/register', async (req, res) => {
       },
     });
     
-    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
-    const response: AuthResponse = { 
-      token, 
-      user: { id: user.id, username: user.username, role: user.role } 
-    };
-    
-    res.status(201).json(response);
+    res.status(201).json({ message: 'Account created successfully' });
   } catch (error: any) {
     if (error.code === 'P2002') return res.status(400).json({ error: 'Username already exists' });
     res.status(500).json({ error: 'Failed to create user' });
@@ -109,14 +103,7 @@ app.post('/api/auth/register', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
   const { username, password } = req.body;
   try {
-    const user = await prisma.user.findFirst({ 
-      where: { 
-        OR: [
-          { username },
-          { email: username }
-        ]
-      } 
-    });
+    const user = await prisma.user.findUnique({ where: { username } });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
