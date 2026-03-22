@@ -1,0 +1,15 @@
+{
+  "extends": "./tsconfig.base.json",
+  "files": [],
+  "references": [
+    {
+      "path": "./apps/api"
+    },
+    {
+      "path": "./apps/image-puzzle"
+    },
+    {
+      "path": "./libs/shared/types"
+    }
+  ]
+}

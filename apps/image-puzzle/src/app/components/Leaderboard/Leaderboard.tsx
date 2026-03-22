@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../../config';
+
 
 interface Ranking {
   rank: number;
@@ -19,7 +21,7 @@ const Leaderboard: React.FC = () => {
     const fetchRankings = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`https://puzzle-api-z48f.onrender.com/api/leaderboard/${level}`);
+        const { data } = await axios.get(`${API_BASE_URL}/api/leaderboard/${level}`);
         setRankings(data);
       } catch (error) {
         console.error('Failed to fetch rankings', error);

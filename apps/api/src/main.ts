@@ -1,5 +1,6 @@
 import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import * as dotenv from 'dotenv';
 import bcrypt from 'bcryptjs';
 import * as jwt from 'jsonwebtoken';
@@ -20,8 +21,13 @@ const prisma = new PrismaClient({ adapter });
 const app = express();
 const port = process.env.PORT || 3333;
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
+const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:4200';
 
-app.use(cors());
+app.use(cors({
+  origin: FRONTEND_URL,
+  credentials: true
+}));
+app.use(cookieParser());
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
@@ -57,7 +63,10 @@ interface AuthRequest extends Request {
 // Middleware: Authenticate
 const authenticate = (req: AuthRequest, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
-  const token = authHeader && authHeader.split(' ')[1];
+  const headerToken = authHeader && authHeader.split(' ')[1];
+  const cookieToken = req.cookies?.jwt;
+  
+  const token = cookieToken || headerToken;
   
   if (!token) return res.status(401).json({ error: 'Unauthorized: No token provided' });
 
@@ -109,8 +118,17 @@ app.post('/api/auth/login', async (req, res) => {
     }
 
     const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
+    
+    // Set cookie
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-domain production, 'lax' for local
+      maxAge: 24 * 60 * 60 * 1000 // 1 day
+    });
+
     const response: AuthResponse = { 
-      token, 
+      token, // Still returning token for backward compatibility/flexibility
       user: { id: user.id, username: user.username, role: user.role } 
     };
     res.json(response);
@@ -118,6 +136,30 @@ app.post('/api/auth/login', async (req, res) => {
     console.error('Login error:', error);
     res.status(500).json({ error: 'Login failed' });
   }
+});
+
+// 2b. Auth: Me (Verify session)
+app.get('/api/auth/me', authenticate, async (req: AuthRequest, res) => {
+  try {
+    const user = await prisma.user.findUnique({ 
+      where: { id: req.userId },
+      select: { id: true, username: true, role: true }
+    });
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    res.json({ user });
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to fetch user' });
+  }
+});
+
+// 2c. Auth: Logout
+app.post('/api/auth/logout', (req, res) => {
+  res.clearCookie('jwt', {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax'
+  });
+  res.json({ message: 'Logged out successfully' });
 });
 
 // 3. Admin: Upload Puzzle

@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { API_BASE_URL } from '../../config';
+
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -32,7 +34,7 @@ const Register: React.FC = () => {
 
     setIsLoading(true);
     try {
-      await axios.post('https://puzzle-api-z48f.onrender.com/api/auth/register', { username, password });
+      await axios.post(`${API_BASE_URL}/api/auth/register`, { username, password });
       
       setSuccess('Account created successfully! Please login to continue.');
       setTimeout(() => {

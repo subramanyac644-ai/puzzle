@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link, useLocation } from 'react-router-dom';
 import { AuthResponse } from '@core-hubble/shared/types';
+import { API_BASE_URL } from '../../config';
+import { useAuth } from '../../context/AuthContext';
+
 
 const Login: React.FC = () => {
   const [username, setUsername] = useState('');
@@ -12,6 +15,7 @@ const Login: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { login, sessionExpired } = useAuth();
   const logoutSuccess = location.state?.logoutSuccess;
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,9 +24,10 @@ const Login: React.FC = () => {
     setSuccess('');
     setIsLoading(true);
     try {
-      const { data } = await axios.post<AuthResponse>('https://puzzle-api-z48f.onrender.com/api/auth/login', { username, password });
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      const { data } = await axios.post<AuthResponse>(`${API_BASE_URL}/api/auth/login`, { username, password });
+      
+      // Update context
+      login(data.user);
       
       setSuccess('Login successful! Redirecting...');
       setTimeout(() => {
@@ -40,6 +45,7 @@ const Login: React.FC = () => {
       <button className="back-btn auth-back" onClick={() => navigate('/')}>← Back home</button>
       <div className="auth-card">
         <h2>Login</h2>
+        {sessionExpired && <div className="error-message">Session expired, please login again.</div>}
         {logoutSuccess && <div className="success-message">You have been successfully logged out.</div>}
         {error && <div className="error-message">{error}</div>}
         {success && <div className="success-message">{success}</div>}

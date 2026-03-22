@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../../config';
+
 
 interface Puzzle {
   id: string;
@@ -37,7 +39,7 @@ const AdminDashboard: React.FC = () => {
     setFetching(true);
     const token = localStorage.getItem('token');
     try {
-      const { data } = await axios.get('https://puzzle-api-z48f.onrender.com/api/admin/puzzles', {
+      const { data } = await axios.get(`${API_BASE_URL}/api/admin/puzzles`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setPuzzles(data);
@@ -52,7 +54,7 @@ const AdminDashboard: React.FC = () => {
     setFetchingUsers(true);
     const token = localStorage.getItem('token');
     try {
-      const { data } = await axios.get('https://puzzle-api-z48f.onrender.com/api/admin/users', {
+      const { data } = await axios.get(`${API_BASE_URL}/api/admin/users`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setUsers(data);
@@ -110,7 +112,7 @@ const AdminDashboard: React.FC = () => {
     formData.append('level', level);
 
     try {
-      await axios.post('https://puzzle-api-z48f.onrender.com/api/admin/puzzles', 
+      await axios.post(`${API_BASE_URL}/api/admin/puzzles`, 
         formData,
         { headers: { 
           'Authorization': `Bearer ${token}`,
@@ -131,7 +133,7 @@ const AdminDashboard: React.FC = () => {
   const handleDelete = async (id: string) => {
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`https://puzzle-api-z48f.onrender.com/api/admin/puzzles/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/admin/puzzles/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('Puzzle deleted successfully!');
@@ -145,7 +147,7 @@ const AdminDashboard: React.FC = () => {
   const handleDeleteUser = async (id: string) => {
     const token = localStorage.getItem('token');
     try {
-      await axios.delete(`https://puzzle-api-z48f.onrender.com/api/admin/users/${id}`, {
+      await axios.delete(`${API_BASE_URL}/api/admin/users/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       setMessage('User deleted successfully!');
@@ -222,7 +224,7 @@ const AdminDashboard: React.FC = () => {
             ) : (
               puzzles.map((p) => (
                 <div key={p.id} className="puzzle-item">
-                  <img src={p.imageUrl.startsWith('http') || p.imageUrl.startsWith('data:') ? p.imageUrl : `https://puzzle-api-z48f.onrender.com${p.imageUrl}`} alt="Puzzle" className="puzzle-thumb" />
+                  <img src={p.imageUrl.startsWith('http') || p.imageUrl.startsWith('data:') ? p.imageUrl : `${API_BASE_URL}${p.imageUrl}`} alt="Puzzle" className="puzzle-thumb" />
                   <div className="puzzle-info">
                     <span className={`badge badge-${p.level}`}>{p.level.toUpperCase()}</span>
                     <span className="p-id">ID: {p.id.substring(0, 8)}...</span>

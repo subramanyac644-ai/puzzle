@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { API_BASE_URL } from '../../config';
+
 import { useNavigate } from 'react-router-dom';
 
 const LevelSelection: React.FC = () => {
@@ -12,7 +14,7 @@ const LevelSelection: React.FC = () => {
     const fetchPuzzles = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`https://puzzle-api-z48f.onrender.com/api/puzzles/${level}`);
+        const { data } = await axios.get(`${API_BASE_URL}/api/puzzles/${level}`);
         setPuzzles(data);
       } catch (error) {
         console.error('Failed to fetch puzzles', error);
@@ -46,7 +48,7 @@ const LevelSelection: React.FC = () => {
         ) : (
           <>
             {puzzles.map((p) => {
-              const normalizedUrl = p.imageUrl.startsWith('http') || p.imageUrl.startsWith('data:') ? p.imageUrl : `https://puzzle-api-z48f.onrender.com${p.imageUrl}`;
+              const normalizedUrl = p.imageUrl.startsWith('http') || p.imageUrl.startsWith('data:') ? p.imageUrl : `${API_BASE_URL}${p.imageUrl}`;
               return (
                 <div key={p.id} className="puzzle-card" onClick={() => navigate(`/play/${p.id}`)}>
                   <div className="puzzle-thumb" style={{ backgroundImage: `url(${normalizedUrl})` }}>

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_BASE_URL } from '../../config';
+
 import ImagePuzzle from '../ImagePuzzle/ImagePuzzle';
 
 const PuzzlePlayer: React.FC = () => {
@@ -14,7 +16,7 @@ const PuzzlePlayer: React.FC = () => {
     const fetchPuzzle = async () => {
       setLoading(true);
       try {
-        const { data } = await axios.get(`https://puzzle-api-z48f.onrender.com/api/puzzles/single/${id}`);
+        const { data } = await axios.get(`${API_BASE_URL}/api/puzzles/single/${id}`);
         setPuzzle(data);
       } catch (error) {
         console.error('Failed to fetch puzzle', error);
@@ -27,7 +29,7 @@ const PuzzlePlayer: React.FC = () => {
 
   const getImageUrl = (url: string) => {
     if (!url) return '';
-    return url.startsWith('http') || url.startsWith('data:') ? url : `https://puzzle-api-z48f.onrender.com${url}`;
+    return url.startsWith('http') || url.startsWith('data:') ? url : `${API_BASE_URL}${url}`;
   };
 
   if (loading) return <div className="loading">Loading puzzle...</div>;

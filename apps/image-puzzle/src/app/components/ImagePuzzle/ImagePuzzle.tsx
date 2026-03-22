@@ -5,6 +5,8 @@ import type { TileData } from './utils';
 import confetti from 'canvas-confetti';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { API_BASE_URL } from '../../config';
+
 
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_SIZE_MB = 8;
@@ -232,7 +234,7 @@ const ImagePuzzle: React.FC<ImagePuzzleProps> = ({ externalImage, level, puzzleI
     const token = localStorage.getItem('token');
     if (token && puzzleId) {
       try {
-        await axios.post('https://puzzle-api-z48f.onrender.com/api/scores', {
+        await axios.post(`${API_BASE_URL}/api/scores`, {
           puzzleId,
           score: currentScore,
           level: diffObj?.label.toLowerCase() || 'easy'
@@ -262,7 +264,7 @@ const ImagePuzzle: React.FC<ImagePuzzleProps> = ({ externalImage, level, puzzleI
   const handleNextPuzzle = async () => {
     if (!level) return;
     try {
-      const { data } = await axios.get(`https://puzzle-api-z48f.onrender.com/api/puzzles/${level}`);
+      const { data } = await axios.get(`${API_BASE_URL}/api/puzzles/${level}`);
       // Sort puzzles by registration order (createdAt)
       const sorted = data.sort((a: any, b: any) => 
         new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
