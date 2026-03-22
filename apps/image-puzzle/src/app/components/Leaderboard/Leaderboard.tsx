@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_BASE_URL } from '../../config';
+import { useAuth } from '../../context/AuthContext';
 
 
 interface Ranking {
@@ -15,7 +16,7 @@ const Leaderboard: React.FC = () => {
   const [rankings, setRankings] = useState<Ranking[]>([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const { user } = useAuth();
 
   useEffect(() => {
     const fetchRankings = async () => {

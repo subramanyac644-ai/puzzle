@@ -34,7 +34,8 @@ const Login: React.FC = () => {
         navigate('/dashboard');
       }, 1500);
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Login failed');
+      console.error('Login error:', err);
+      setError(err.response?.data?.error || err.message || 'Login failed');
     } finally {
       setIsLoading(false);
     }

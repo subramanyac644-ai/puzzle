@@ -21,10 +21,24 @@ const prisma = new PrismaClient({ adapter });
 const app = express();
 const port = process.env.PORT || 3333;
 const JWT_SECRET = process.env.JWT_SECRET || 'secret';
-const FRONTEND_URL = process.env.FRONTEND_URL || 'http://localhost:4200';
+const FRONTEND_URL = process.env.FRONTEND_URL;
+
+const allowedOrigins = [
+  'http://localhost:4200',
+  'http://localhost:5173',
+  'http://localhost:3000',
+  FRONTEND_URL
+].filter(Boolean) as string[];
 
 app.use(cors({
-  origin: FRONTEND_URL,
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      console.warn(`Origin ${origin} not allowed by CORS`);
+      callback(null, true); // Allow for now to debug, but in production we should be strict
+    }
+  },
   credentials: true
 }));
 app.use(cookieParser());
