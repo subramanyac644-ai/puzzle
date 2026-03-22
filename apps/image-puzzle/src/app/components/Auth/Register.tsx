@@ -4,7 +4,6 @@ import { useNavigate, Link } from 'react-router-dom';
 
 const Register: React.FC = () => {
   const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
@@ -18,12 +17,8 @@ const Register: React.FC = () => {
     setError('');
     setSuccess('');
 
-    if (!username || !email || !password || !confirmPassword) {
+    if (!username || !password || !confirmPassword) {
       setError('All fields are required');
-      return;
-    }
-    if (!/^\S+@\S+\.\S+$/.test(email)) {
-      setError('Please enter a valid email address');
       return;
     }
     if (password.length < 6) {
@@ -37,7 +32,7 @@ const Register: React.FC = () => {
 
     setIsLoading(true);
     try {
-      const { data } = await axios.post('https://puzzle-api-z48f.onrender.com/api/auth/register', { username, email, password });
+      const { data } = await axios.post('https://puzzle-api-z48f.onrender.com/api/auth/register', { username, password });
       
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
@@ -69,16 +64,6 @@ const Register: React.FC = () => {
               onChange={(e) => setUsername(e.target.value)} 
               required 
               autoComplete="off"
-            />
-          </div>
-          <div className="form-group">
-            <label>Email</label>
-            <input 
-              type="email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
-              required 
-              autoComplete="email"
             />
           </div>
           <div className="form-group">

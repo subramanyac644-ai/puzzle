@@ -79,20 +79,14 @@ const isAdmin = (req: AuthRequest, res: Response, next: NextFunction) => {
 
 // 1. Auth: Register
 app.post('/api/auth/register', async (req, res) => {
-  const { username, email, password } = req.body;
-  if (!username || !email || !password) return res.status(400).json({ error: 'Username, email, and password required' });
-
-  // Basic validate email
-  if (!/^\S+@\S+\.\S+$/.test(email)) {
-    return res.status(400).json({ error: 'Invalid email format' });
-  }
+  const { username, password } = req.body;
+  if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = await prisma.user.create({
       data: {
         username,
-        email,
         password: hashedPassword,
         role: 'user',
       },
@@ -106,7 +100,7 @@ app.post('/api/auth/register', async (req, res) => {
     
     res.status(201).json(response);
   } catch (error: any) {
-    if (error.code === 'P2002') return res.status(400).json({ error: 'Username or email already exists' });
+    if (error.code === 'P2002') return res.status(400).json({ error: 'Username already exists' });
     res.status(500).json({ error: 'Failed to create user' });
   }
 });

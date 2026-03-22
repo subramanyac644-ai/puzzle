@@ -45,7 +45,7 @@ const Login: React.FC = () => {
         {success && <div className="success-message">{success}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Username or Email</label>
+            <label>Username</label>
             <input 
               type="text" 
               value={username} 
