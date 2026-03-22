@@ -22,8 +22,10 @@ const Register: React.FC = () => {
       localStorage.setItem('token', data.token);
       localStorage.setItem('user', JSON.stringify(data.user));
       
-      setSuccess('Your account has been successfully created!');
-      navigate('/dashboard');
+      setSuccess('Account created successfully! Redirecting...');
+      setTimeout(() => {
+        navigate('/dashboard');
+      }, 1500);
     } catch (err: any) {
       setError(err.response?.data?.error || 'Registration failed');
     } finally {
