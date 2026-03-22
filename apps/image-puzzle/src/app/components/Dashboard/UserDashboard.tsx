@@ -111,7 +111,7 @@ const UserDashboard: React.FC = () => {
         ) : (
           <>
             {puzzles.map((p) => {
-              const normalizedUrl = p.imageUrl.startsWith('http') ? p.imageUrl : `https://puzzle-api-z48f.onrender.com${p.imageUrl}`;
+              const normalizedUrl = p.imageUrl.startsWith('http') || p.imageUrl.startsWith('data:') ? p.imageUrl : `https://puzzle-api-z48f.onrender.com${p.imageUrl}`;
               return (
                 <div key={p.id} className="puzzle-card" onClick={() => navigate(`/play/${p.id}`)}>
                   <div className="puzzle-card-inner">

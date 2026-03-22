@@ -222,7 +222,7 @@ const AdminDashboard: React.FC = () => {
             ) : (
               puzzles.map((p) => (
                 <div key={p.id} className="puzzle-item">
-                  <img src={p.imageUrl.startsWith('http') ? p.imageUrl : `https://puzzle-api-z48f.onrender.com${p.imageUrl}`} alt="Puzzle" className="puzzle-thumb" />
+                  <img src={p.imageUrl.startsWith('http') || p.imageUrl.startsWith('data:') ? p.imageUrl : `https://puzzle-api-z48f.onrender.com${p.imageUrl}`} alt="Puzzle" className="puzzle-thumb" />
                   <div className="puzzle-info">
                     <span className={`badge badge-${p.level}`}>{p.level.toUpperCase()}</span>
                     <span className="p-id">ID: {p.id.substring(0, 8)}...</span>

@@ -32,15 +32,7 @@ if (!fs.existsSync(uploadDir)) {
 }
 
 // Multer Configuration
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, uploadDir);
-  },
-  filename: (req, file, cb) => {
-    const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-    cb(null, uniqueSuffix + path.extname(file.originalname));
-  }
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage,
@@ -140,9 +132,10 @@ app.post('/api/admin/puzzles', authenticate, isAdmin, upload.single('image'), as
   if (!req.file || !level) return res.status(400).json({ error: 'Image file and level required' });
 
   try {
+    const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
     const puzzle = await prisma.puzzle.create({
       data: {
-        imageUrl: `/uploads/${req.file.filename}`,
+        imageUrl: base64Image,
         level,
         uploadedBy: req.userId!,
       },
@@ -281,9 +274,10 @@ app.post('/api/user/puzzles', authenticate, (req: AuthRequest, res, next) => {
   if (!req.file || !level) return res.status(400).json({ error: 'Image file and level required' });
 
   try {
+    const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
     const puzzle = await prisma.puzzle.create({
       data: {
-        imageUrl: `/uploads/${req.file.filename}`,
+        imageUrl: base64Image,
         level,
         uploadedBy: req.userId!,
       },

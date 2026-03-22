@@ -27,7 +27,7 @@ const PuzzlePlayer: React.FC = () => {
 
   const getImageUrl = (url: string) => {
     if (!url) return '';
-    return url.startsWith('http') ? url : `https://puzzle-api-z48f.onrender.com${url}`;
+    return url.startsWith('http') || url.startsWith('data:') ? url : `https://puzzle-api-z48f.onrender.com${url}`;
   };
 
   if (loading) return <div className="loading">Loading puzzle...</div>;
