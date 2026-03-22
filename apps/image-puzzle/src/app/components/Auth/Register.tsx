@@ -8,20 +8,26 @@ const Register: React.FC = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setSuccess('');
+    setIsLoading(true);
     try {
-      await axios.post('https://puzzle-api-z48f.onrender.com/api/auth/register', { username, password });
+      const { data } = await axios.post('https://puzzle-api-z48f.onrender.com/api/auth/register', { username, password });
+      
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      
       setSuccess('Your account has been successfully created!');
-      setTimeout(() => {
-        navigate('/login');
-      }, 3000);
+      navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.error || 'Registration failed');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,7 +69,9 @@ const Register: React.FC = () => {
               </button>
             </div>
           </div>
-          <button type="submit" className="btn btn-primary" disabled={!!success}>Register</button>
+          <button type="submit" className="btn btn-primary" disabled={isLoading || !!success}>
+            {isLoading ? 'Registering...' : 'Register'}
+          </button>
         </form>
         <p className="auth-footer">
           Already have an account? <Link to="/login">Login here</Link>

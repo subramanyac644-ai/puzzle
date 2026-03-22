@@ -99,7 +99,14 @@ app.post('/api/auth/register', async (req, res) => {
         role: 'user',
       },
     });
-    res.status(201).json({ message: 'User created successfully' });
+    
+    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
+    const response: AuthResponse = { 
+      token, 
+      user: { id: user.id, username: user.username, role: user.role } 
+    };
+    
+    res.status(201).json(response);
   } catch (error: any) {
     if (error.code === 'P2002') return res.status(400).json({ error: 'Username already exists' });
     res.status(500).json({ error: 'Failed to create user' });

@@ -8,6 +8,7 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
   const logoutSuccess = location.state?.logoutSuccess;
@@ -15,6 +16,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    setIsLoading(true);
     try {
       const { data } = await axios.post<AuthResponse>('https://puzzle-api-z48f.onrender.com/api/auth/login', { username, password });
       localStorage.setItem('token', data.token);
@@ -22,6 +24,8 @@ const Login: React.FC = () => {
       navigate('/dashboard');
     } catch (err: any) {
       setError(err.response?.data?.error || 'Login failed');
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -63,7 +67,9 @@ const Login: React.FC = () => {
               </button>
             </div>
           </div>
-          <button type="submit" className="btn btn-primary">Login</button>
+          <button type="submit" className="btn btn-primary" disabled={isLoading}>
+            {isLoading ? 'Logging in...' : 'Login'}
+          </button>
         </form>
         <p className="auth-footer">
           Don't have an account? <Link to="/register">Register here</Link>
