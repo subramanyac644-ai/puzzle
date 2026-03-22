@@ -7,6 +7,8 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { API_BASE_URL } from '../../config';
 
+import { useAuth } from '../../context/AuthContext';
+
 
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 const MAX_SIZE_MB = 8;
@@ -53,7 +55,7 @@ const ImagePuzzle: React.FC<ImagePuzzleProps> = ({ externalImage, level, puzzleI
   const [showGhost, setShowGhost]     = useState(true);
   const [highScore, setHighScore]     = useState<number>(0);
   const navigate = useNavigate();
-  const user = JSON.parse(localStorage.getItem('user') || 'null');
+  const { user } = useAuth();
   const inputRef = useRef<HTMLInputElement>(null);
 
   /* ── Load Image Size and Reset State on Change ───────────── */
@@ -230,19 +232,18 @@ const ImagePuzzle: React.FC<ImagePuzzleProps> = ({ externalImage, level, puzzleI
     // Calculate precise score using the exact number of moves that solved the board
     const currentScore = Math.max(50, (1000 - finalMoves * 10) * multiplier);
     
-    // Save to backend using JWT if logged in
-    const token = localStorage.getItem('token');
-    if (token && puzzleId) {
+    // Save to backend using JWT cookies if logged in
+    if (user && puzzleId) {
       try {
         await axios.post(`${API_BASE_URL}/api/scores`, {
           puzzleId,
           score: currentScore,
           level: diffObj?.label.toLowerCase() || 'easy'
-        }, {
-          headers: { Authorization: `Bearer ${token}` }
         });
-      } catch (err) {
+        console.log('Score saved to leaderboard successfully');
+      } catch (err: any) {
         console.error('Failed to save score:', err);
+        setError(`Success solving! But couldn't save score: ${err.response?.data?.error || err.message}`);
       }
     }
   };
