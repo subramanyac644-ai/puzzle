@@ -121,10 +121,26 @@ app.post('/api/auth/register', async (req, res) => {
         role: 'user',
       },
     });
+
+    const token = jwt.sign({ userId: user.id, role: user.role }, JWT_SECRET, { expiresIn: '1d' });
     
-    res.status(201).json({ message: 'Account created successfully' });
+    // Set cookie for auto-login
+    res.cookie('jwt', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+      maxAge: 24 * 60 * 60 * 1000 // 1 day
+    });
+
+    const response: AuthResponse = { 
+      token, 
+      user: { id: user.id, username: user.username, role: user.role } 
+    };
+    
+    res.status(201).json(response);
   } catch (error: any) {
     if (error.code === 'P2002') return res.status(400).json({ error: 'Username already exists' });
+    console.error('Registration error:', error);
     res.status(500).json({ error: 'Failed to create user' });
   }
 });

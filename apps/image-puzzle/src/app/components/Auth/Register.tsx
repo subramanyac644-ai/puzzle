@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
+import { AuthResponse } from '@core-hubble/shared/types';
 import { API_BASE_URL } from '../../config';
+import { useAuth } from '../../context/AuthContext';
 
 
 const Register: React.FC = () => {
@@ -13,6 +15,8 @@ const Register: React.FC = () => {
   const [success, setSuccess] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -34,12 +38,17 @@ const Register: React.FC = () => {
 
     setIsLoading(true);
     try {
-      await axios.post(`${API_BASE_URL}/api/auth/register`, { username, password });
+      const { data } = await axios.post<AuthResponse>(`${API_BASE_URL}/api/auth/register`, { username, password });
       
-      setSuccess('Account created successfully! Please login to continue.');
+      // Auto-login after registration
+      login(data.user);
+      
+      setSuccess('Account created! Welcome, ' + data.user.username + '!');
+      
+      // Redirect almost immediately (short delay for visual feedback)
       setTimeout(() => {
-        navigate('/login');
-      }, 1500);
+        navigate('/dashboard');
+      }, 600);
     } catch (err: any) {
       console.error('Registration error:', err);
       setError(err.response?.data?.error || err.message || 'Registration failed');
@@ -99,7 +108,12 @@ const Register: React.FC = () => {
             </div>
           </div>
           <button type="submit" className="btn btn-primary" disabled={isLoading || !!success}>
-            {isLoading ? 'Registering...' : 'Register'}
+            {isLoading ? (
+              <>
+                <span className="loading-spinner"></span>
+                Registering...
+              </>
+            ) : 'Register'}
           </button>
         </form>
         <p className="auth-footer">
