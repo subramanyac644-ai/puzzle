@@ -32,9 +32,20 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+    if (!origin) return callback(null, true);
+    
+    // Allow if in explicit list, or if it's a vercel/localhost environment
+    const isAllowed = 
+      allowedOrigins.includes(origin) || 
+      origin.includes('vercel.app') || 
+      origin.includes('localhost') ||
+      origin.includes('127.0.0.1');
+      
+    if (isAllowed) {
       callback(null, true);
     } else {
+      // In production, we'll log the rejected origin to help debugging
+      console.log(`[CORS] Rejected origin: ${origin}`);
       callback(new Error('Not allowed by CORS'));
     }
   },
