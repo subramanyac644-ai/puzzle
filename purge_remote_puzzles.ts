@@ -29,7 +29,7 @@ async function main() {
     }
     
     console.log(`Successfully purged ${deletedCount} broken puzzles from the live Render.com database.`);
-  } catch(e) {
+  } catch(e: any) {
     console.error("Error connecting to remote API:", e.response?.data || e.message);
   }
 }

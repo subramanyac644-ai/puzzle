@@ -21,7 +21,7 @@ async function main() {
     }
     
     console.log(`Successfully purged ${deletedCount} diagnostic puzzles.`);
-  } catch(e) {
+  } catch(e: any) {
     console.error("Error:", e.response?.data || e.message);
   }
 }

@@ -8,7 +8,7 @@ const DEFAULT_IMAGE = 'https://images.unsplash.com/photo-1534125895742-a169bbf6d
 
 async function main() {
   const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
-  const adapter = new PrismaPg(pool);
+  const adapter = new PrismaPg(pool as any);
   const prisma = new PrismaClient({ adapter });
 
   try {
@@ -26,7 +26,7 @@ async function main() {
       console.log(`Updated puzzle ${puzzle.id}`);
     }
     console.log('Done!');
-  } catch(e) { console.error(e) }
+  } catch(e: any) { console.error(e) }
   finally { await prisma.$disconnect(); await pool.end(); }
 }
 main();

@@ -11,7 +11,7 @@ const dummyBase64 = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAA
 
 async function main() {
   const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
-  const adapter = new PrismaPg(pool);
+  const adapter = new PrismaPg(pool as any);
   const prisma = new PrismaClient({ adapter });
 
   try {
@@ -34,7 +34,7 @@ async function main() {
     const saved = await prisma.puzzle.findUnique({ where: { id: puzzle.id } });
     console.log("Saved URL matches exactly? ", saved?.imageUrl === dummyBase64);
     
-  } catch(e) { console.error(e) }
+  } catch(e: any) { console.error(e) }
   finally { await prisma.$disconnect(); await pool.end(); }
 }
 main();

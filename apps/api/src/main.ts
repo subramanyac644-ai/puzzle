@@ -32,23 +32,16 @@ const allowedOrigins = [
 
 app.use(cors({
   origin: (origin, callback) => {
-    if (!origin || allowedOrigins.includes(origin)) {
+    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
-      console.warn(`Origin ${origin} not allowed by CORS`);
-      callback(null, true); // Allow for now to debug, but in production we should be strict
+      callback(new Error('Not allowed by CORS'));
     }
   },
   credentials: true
 }));
 app.use(cookieParser());
 app.use(express.json());
-
-// Request logger
-app.use((req, res, next) => {
-  console.log(`${new Date().toISOString()} - ${req.method} ${req.url}`);
-  next();
-});
 
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
@@ -113,7 +106,8 @@ app.post('/api/auth/register', async (req, res) => {
   if (!username || !password) return res.status(400).json({ error: 'Username and password required' });
 
   try {
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 8);
+
     const user = await prisma.user.create({
       data: {
         username,
@@ -150,6 +144,7 @@ app.post('/api/auth/login', async (req, res) => {
   const { username, password } = req.body;
   try {
     const user = await prisma.user.findUnique({ where: { username } });
+
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ error: 'Invalid username or password' });
     }
@@ -160,12 +155,12 @@ app.post('/api/auth/login', async (req, res) => {
     res.cookie('jwt', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax', // 'none' for cross-domain production, 'lax' for local
+      sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
       maxAge: 24 * 60 * 60 * 1000 // 1 day
     });
 
     const response: AuthResponse = { 
-      token, // Still returning token for backward compatibility/flexibility
+      token, 
       user: { id: user.id, username: user.username, role: user.role } 
     };
     res.json(response);

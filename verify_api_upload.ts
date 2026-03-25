@@ -24,7 +24,7 @@ async function test() {
     console.log("Success! Status:", res.status);
     console.log("Data ID:", res.data.id, "Image length:", res.data.imageUrl?.length);
     console.log("ImageUrl exactly:", res.data.imageUrl);
-  } catch(err) {
+  } catch(err: any) {
     console.log("Status:", err.response?.status);
     console.log("Data:", err.response?.data);
     console.log("Message:", err.message);

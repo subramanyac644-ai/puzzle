@@ -232,6 +232,14 @@ const ImagePuzzle: React.FC<ImagePuzzleProps> = ({ externalImage, level, puzzleI
     // Calculate precise score using the exact number of moves that solved the board
     const currentScore = Math.max(50, (1000 - finalMoves * 10) * multiplier);
     
+    // Local high score management
+    const saved = localStorage.getItem(`highScore_${gridSize}`);
+    const previousHigh = saved ? parseInt(saved, 10) : 0;
+    if (currentScore > previousHigh) {
+      localStorage.setItem(`highScore_${gridSize}`, currentScore.toString());
+      setHighScore(currentScore);
+    }
+
     // Save to backend using JWT cookies if logged in
     if (user && puzzleId) {
       try {
@@ -240,9 +248,7 @@ const ImagePuzzle: React.FC<ImagePuzzleProps> = ({ externalImage, level, puzzleI
           score: currentScore,
           level: diffObj?.label.toLowerCase() || 'easy'
         });
-        console.log('Score saved to leaderboard successfully');
       } catch (err: any) {
-        console.error('Failed to save score:', err);
         setError(`Success solving! But couldn't save score: ${err.response?.data?.error || err.message}`);
       }
     }
@@ -279,7 +285,7 @@ const ImagePuzzle: React.FC<ImagePuzzleProps> = ({ externalImage, level, puzzleI
         alert("No more levels available");
         navigate('/dashboard');
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Failed to fetch next puzzle', err);
     }
   };
@@ -488,11 +494,7 @@ const ImagePuzzle: React.FC<ImagePuzzleProps> = ({ externalImage, level, puzzleI
         const diffObj = DIFFICULTIES.find(d => d.grid === gridSize);
         const multiplier = diffObj?.multiplier || 1;
         const currentScore = Math.max(50, (1000 - moves * 10) * multiplier);
-        const isNewHigh = currentScore > highScore;
-        
-        if (isNewHigh) {
-          localStorage.setItem(`highScore_${gridSize}`, currentScore.toString());
-        }
+        const isNewHigh = currentScore >= highScore && highScore > 0;
 
         return (
           <div className="modal-overlay">

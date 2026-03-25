@@ -18,7 +18,7 @@ async function main() {
     } else {
       console.log("No puzzles found for level 'easy'");
     }
-  } catch(e) { console.error("Error fetching live API:", e.message); }
+  } catch(e: any) { console.error("Error fetching live API:", e.message); }
 }
 
 main();

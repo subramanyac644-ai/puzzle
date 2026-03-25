@@ -30,11 +30,11 @@ const Login: React.FC = () => {
       login(data.user);
       
       setSuccess('Login successful! Redirecting...');
+      // Reduced delay from 1500ms to 500ms for better perceived performance
       setTimeout(() => {
         navigate('/dashboard');
-      }, 1500);
+      }, 500);
     } catch (err: any) {
-      console.error('Login error:', err);
       setError(err.response?.data?.error || err.message || 'Login failed');
     } finally {
       setIsLoading(false);

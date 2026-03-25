@@ -45,10 +45,8 @@ const Register: React.FC = () => {
       
       setSuccess('Account created! Welcome, ' + data.user.username + '!');
       
-      // Redirect almost immediately (short delay for visual feedback)
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 600);
+      // Redirect immediately for better perceived performance
+      navigate('/dashboard');
     } catch (err: any) {
       console.error('Registration error:', err);
       setError(err.response?.data?.error || err.message || 'Registration failed');
