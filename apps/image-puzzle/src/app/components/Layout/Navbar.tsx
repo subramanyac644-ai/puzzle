@@ -12,7 +12,7 @@ const Navbar: React.FC = () => {
     navigate('/', { state: { logoutSuccess: true } });
   };
 
-  const isMainPage = location.pathname === '/';
+  const showLeaderboard = !!user && location.pathname !== '/';
 
   return (
     <nav className="navbar">
@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
       <ul className="navbar-links">
         {!user && <li><Link to="/">Home</Link></li>}
         {user && <li><Link to="/dashboard">Dashboard</Link></li>}
-        {!isMainPage && <li><Link to="/leaderboard">Leaderboard</Link></li>}
+        {showLeaderboard && <li><Link to="/leaderboard">Leaderboard</Link></li>}
         {user?.role === 'admin' && (
           <li><Link to="/admin">Admin</Link></li>
         )}
