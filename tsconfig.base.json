@@ -13,6 +13,8 @@
     "lib": ["es2017", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
+    "strict": true,
+    "noImplicitAny": true,
     "baseUrl": ".",
     "paths": {
       "@core-hubble/prisma": ["libs/prisma/src/index.ts"],

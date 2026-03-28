@@ -23,7 +23,7 @@ export async function GET(
       LIMIT 50
     `;
     
-    const leaderboard: LeaderboardEntry[] = rankings.map((s, idx) => ({
+    const leaderboard: LeaderboardEntry[] = (rankings as any[]).map((s: any, idx: number) => ({
         rank: idx + 1,
         username: s.username,
         score: Number(s.score)
