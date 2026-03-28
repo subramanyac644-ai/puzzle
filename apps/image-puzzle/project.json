@@ -4,27 +4,35 @@
   "sourceRoot": "apps/image-puzzle/src",
   "projectType": "application",
   "tags": [],
-  "// targets": "to see all targets run: nx show project image-puzzle --web",
   "targets": {
-    "serve": {
-      "executor": "nx:run-commands",
-      "options": {
-        "command": "npx vite apps/image-puzzle",
-        "cwd": "."
-      }
-    },
     "build": {
-      "executor": "nx:run-commands",
+      "executor": "@nx/next:build",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
       "options": {
-        "command": "npx vite build apps/image-puzzle",
-        "cwd": "."
+        "root": "apps/image-puzzle",
+        "outputPath": "dist/apps/image-puzzle"
+      },
+      "configurations": {
+        "production": {}
       }
     },
-    "test": {
-      "executor": "nx:run-commands",
+    "serve": {
+      "executor": "@nx/next:server",
+      "defaultConfiguration": "development",
       "options": {
-        "command": "npx vitest run apps/image-puzzle",
-        "cwd": "."
+        "buildTarget": "image-puzzle:build",
+        "dev": true
+      },
+      "configurations": {
+        "development": {
+          "buildTarget": "image-puzzle:build:development",
+          "dev": true
+        },
+        "production": {
+          "buildTarget": "image-puzzle:build:production",
+          "dev": false
+        }
       }
     }
   }
