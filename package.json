@@ -36,6 +36,7 @@
     "@nx/jest": "20.0.0",
     "@nx/next": "20.0.0",
     "@nx/workspace": "20.0.0",
+    "@prisma/config": "^7.6.0",
     "@types/bcryptjs": "^2.4.6",
     "@types/canvas-confetti": "^1.9.0",
     "@types/jsonwebtoken": "^9.0.10",
