@@ -1,13 +1,24 @@
 import { PrismaClient } from '@prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
-import pg from 'pg';
+import { Pool } from 'pg';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
 
 const globalForPrisma = global as unknown as { prisma: PrismaClient };
 
-const pool = new pg.Pool({ connectionString: process.env.DATABASE_URL });
+if (!process.env.DATABASE_URL) {
+  console.error('CRITICAL: DATABASE_URL is not defined in environment variables');
+}
+
+const pool = new Pool({ 
+  connectionString: process.env.DATABASE_URL,
+  connectionTimeoutMillis: 5000 
+});
+
+pool.on('error', (err) => {
+  console.error('Unexpected error on idle client', err);
+});
 const adapter = new PrismaPg(pool as any);
 
 export const prisma =

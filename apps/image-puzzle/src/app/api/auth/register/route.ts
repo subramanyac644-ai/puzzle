@@ -42,6 +42,9 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Username already exists' }, { status: 400 });
     }
     console.error('Registration error:', error);
-    return NextResponse.json({ error: 'Failed to create user' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Registration failed', 
+      details: process.env.NODE_ENV === 'production' ? error.message : undefined 
+    }, { status: 500 });
   }
 }

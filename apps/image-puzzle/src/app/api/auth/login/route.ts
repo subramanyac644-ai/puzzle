@@ -36,6 +36,9 @@ export async function POST(req: NextRequest) {
     return response;
   } catch (error) {
     console.error('Login error:', error);
-    return NextResponse.json({ error: 'Login failed' }, { status: 500 });
+    return NextResponse.json({ 
+      error: 'Login failed', 
+      details: process.env.NODE_ENV === 'production' ? (error as any).message : undefined 
+    }, { status: 500 });
   }
 }
