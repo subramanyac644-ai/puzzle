@@ -18,16 +18,18 @@ Set these in the Render dashboard under **Settings > Environment Variables**:
 ---
 
 ## 2. Frontend: Vercel.com
-Your frontend is a Vite + React application.
+Your frontend is a **Next.js** application.
 
 ### Environment Variables
-Set these in the Vercel dashboard under **Project Settings > Environment Variables**:
-- `VITE_API_BASE_URL`: The URL of your Render API (e.g., `https://puzzle-api-z48f.onrender.com`).
+Set these in the Vercel dashboard:
+- `JWT_SECRET`: Same as backend (required for Auth).
+- `DATABASE_URL`: Your PostgreSQL connection string (required for server-side Prisma).
 
-### Build Command
-- Framework Preset: **Other** or **Vite**
+### Build & Output (Zero-Config)
+I've added a `vercel.json` to the root, so you should be able to use:
+- Framework Preset: **Next.js**
 - Build Command: `npx nx build image-puzzle`
-- Output Directory: `dist/apps/image-puzzle`
+- Output Directory: `dist/apps/image-puzzle/.next`
 
 ---
 
