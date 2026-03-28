@@ -4,13 +4,21 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { API_BASE_URL } from '@core-hubble/utils';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
+import useSWR from 'swr';
+import { PuzzleGridSkeleton } from './PuzzleSkeleton';
+
+const fetcher = (url: string) => axios.get(url).then(res => res.data);
 
 const UserDashboard: React.FC = () => {
   const [level, setLevel] = useState<'easy' | 'medium' | 'hard'>('easy');
-  const [puzzles, setPuzzles] = useState<any[]>([]);
-  const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
+  
+  const { data: puzzles = [], error: fetchError, isLoading, mutate } = useSWR(
+    `${API_BASE_URL}/api/puzzles/${level}`,
+    fetcher
+  );
   
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
@@ -21,22 +29,6 @@ const UserDashboard: React.FC = () => {
     const savedUser = localStorage.getItem('user');
     if (savedUser) setUser(JSON.parse(savedUser));
   }, []);
-
-  const fetchPuzzles = useCallback(async () => {
-    setLoading(true);
-    try {
-      const { data } = await axios.get(`${API_BASE_URL}/api/puzzles/${level}`);
-      setPuzzles(data);
-    } catch (error) {
-      console.error('Failed to fetch puzzles', error);
-    } finally {
-      setLoading(false);
-    }
-  }, [level]);
-
-  useEffect(() => {
-    fetchPuzzles();
-  }, [fetchPuzzles]);
 
   const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -69,7 +61,7 @@ const UserDashboard: React.FC = () => {
           Authorization: `Bearer ${token}`
         }
       });
-      fetchPuzzles(); 
+      mutate(); 
     } catch(err) {
       console.error(err);
       setErrorMsg("Failed to upload image. Please try again.");
@@ -115,17 +107,24 @@ const UserDashboard: React.FC = () => {
       {errorMsg && <div className="error-banner" style={{ margin: '1rem', background: 'rgba(239, 68, 68, 0.2)', color: '#fca5a5', padding: '0.75rem', borderRadius: '8px', textAlign: 'center' }}><span>⚠ {errorMsg}</span></div>}
 
       <div className="puzzle-grid">
-        {loading ? (
-          <div className="loading">Searching for challenges...</div>
+        {isLoading ? (
+          <PuzzleGridSkeleton />
         ) : (
           <>
-            {puzzles.map((p) => {
+            {puzzles.map((p: any) => {
               const normalizedUrl = p.imageUrl.startsWith('http') || p.imageUrl.startsWith('data:') ? p.imageUrl : `${API_BASE_URL}${p.imageUrl}`;
               return (
                 <div key={p.id} className="puzzle-card" onClick={() => router.push(`/play/${p.id}`)}>
                   <div className="puzzle-card-inner">
                     <div className="puzzle-image-container">
-                      <img src={normalizedUrl} alt="Puzzle" className="puzzle-card-img" />
+                      <Image 
+                        src={normalizedUrl} 
+                        alt="Puzzle" 
+                        className="puzzle-card-img" 
+                        fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        priority={puzzles.indexOf(p) < 6}
+                      />
                       <div className="puzzle-card-overlay">
                         <div className="play-hint">Play Now</div>
                       </div>

@@ -28,7 +28,8 @@
     "react": "^19.0.0",
     "react-dnd": "^16.0.1",
     "react-dnd-html5-backend": "^16.0.1",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "swr": "^2.4.1"
   },
   "devDependencies": {
     "@nx/esbuild": "^22.6.3",

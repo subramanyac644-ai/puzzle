@@ -3,6 +3,7 @@
 import React from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@core-hubble/context';
+import Image from 'next/image';
 
 const MainPage: React.FC = () => {
   const router = useRouter();
@@ -29,7 +30,15 @@ const MainPage: React.FC = () => {
           </div>
         </div>
         <div className="hero-image-container">
-          <div className="hero-image-blob"></div>
+          <div className="hero-image-blob">
+            <Image 
+              src="/hero.png" 
+              alt="Hero Puzzle" 
+              fill 
+              priority 
+              quality={90}
+            />
+          </div>
         </div>
       </section>
 

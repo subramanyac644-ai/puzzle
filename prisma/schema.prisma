@@ -25,6 +25,9 @@ model Puzzle {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   scores     Score[]
+
+  @@index([level])
+  @@index([uploadedBy])
 }
 
 model Score {

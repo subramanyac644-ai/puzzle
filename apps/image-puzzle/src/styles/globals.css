@@ -1549,7 +1549,8 @@ body {
 .hero-image-blob {
   width: 500px;
   height: 500px;
-  background: url('/hero.png') center/cover;
+  position: relative;
+  overflow: hidden;
   border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
   box-shadow: 0 0 80px rgba(124, 58, 237, 0.3),
               inset 0 0 40px rgba(255, 255, 255, 0.1);
@@ -1914,4 +1915,45 @@ body {
   padding: 2rem;
   text-align: center;
   color: #9ca3af;
+}
+
+/* --- Skeleton Loaders --- */
+.skeleton-box {
+  background: linear-gradient(90deg, #1e1e2d 25%, #2d2d3d 50%, #1e1e2d 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+.skeleton-badge {
+  width: 50px;
+  height: 20px;
+  border-radius: 4px;
+  background: #2d2d3d;
+}
+
+.skeleton-text-sm {
+  width: 80px;
+  height: 14px;
+  background: #2d2d1d;
+  margin-left: auto;
+  border-radius: 2px;
+}
+
+.skeleton-title {
+  width: 140px;
+  height: 24px;
+  background: #2d2d3d;
+  margin-top: 10px;
+  border-radius: 4px;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.puzzle-card.skeleton .puzzle-card-inner {
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  pointer-events: none;
 }
