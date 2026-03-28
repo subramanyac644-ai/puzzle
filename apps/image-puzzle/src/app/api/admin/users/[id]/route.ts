@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@core-hubble/shared/prisma';
-import { getAuthUser } from '@core-hubble/shared/auth';
+import { prisma } from '@core-hubble/prisma';
+import { getAuthUser } from '@core-hubble/auth';
 
 async function ensureAdmin(req: NextRequest) {
     const auth = await getAuthUser(req);

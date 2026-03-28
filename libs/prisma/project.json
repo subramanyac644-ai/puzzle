@@ -1,15 +1,15 @@
 {
-  "name": "shared-context",
+  "name": "shared-prisma",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/context/src",
+  "sourceRoot": "libs/prisma/src",
   "projectType": "library",
   "tags": [],
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/shared/context/**/*.ts"]
+        "lintFilePatterns": ["libs/prisma/**/*.ts"]
       }
     }
   }

@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@core-hubble/shared/prisma';
-import { LeaderboardEntry } from '@core-hubble/shared/utils';
+import { prisma } from '@core-hubble/prisma';
+import { LeaderboardEntry } from '@core-hubble/utils';
 
 export async function GET(
   req: NextRequest,

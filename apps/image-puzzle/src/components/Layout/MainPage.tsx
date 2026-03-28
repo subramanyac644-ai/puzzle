@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@core-hubble/shared/context';
+import { useAuth } from '@core-hubble/context';
 
 const MainPage: React.FC = () => {
   const router = useRouter();

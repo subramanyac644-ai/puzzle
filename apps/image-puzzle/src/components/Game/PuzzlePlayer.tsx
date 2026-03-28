@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import axios from 'axios';
-import { API_BASE_URL } from '@core-hubble/shared/utils';
+import { API_BASE_URL } from '@core-hubble/utils';
 
 import ImagePuzzle from '../ImagePuzzle/ImagePuzzle';
 

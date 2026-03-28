@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
-import { AuthResponse } from '@core-hubble/shared/utils';
-import { API_BASE_URL } from '@core-hubble/shared/utils';
-import { useAuth } from '@core-hubble/shared/context';
+import { AuthResponse } from '@core-hubble/utils';
+import { API_BASE_URL } from '@core-hubble/utils';
+import { useAuth } from '@core-hubble/context';
 
 
 const Register: React.FC = () => {

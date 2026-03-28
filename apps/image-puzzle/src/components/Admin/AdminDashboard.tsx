@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import { API_BASE_URL } from '@core-hubble/shared/utils';
+import { API_BASE_URL } from '@core-hubble/utils';
 
 
 interface Puzzle {

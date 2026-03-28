@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@core-hubble/shared/prisma';
+import { prisma } from '@core-hubble/prisma';
 import bcrypt from 'bcryptjs';
-import { signToken } from '@core-hubble/shared/auth';
+import { signToken } from '@core-hubble/auth';
 
 export async function POST(req: NextRequest) {
   try {

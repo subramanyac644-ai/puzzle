@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@core-hubble/shared/prisma';
+import { prisma } from '@core-hubble/prisma';
 
 export async function GET(
   req: NextRequest,

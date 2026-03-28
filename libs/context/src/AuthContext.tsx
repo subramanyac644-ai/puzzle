@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
-import { API_BASE_URL } from '@core-hubble/shared/utils';
+import { API_BASE_URL } from '@core-hubble/utils';
 
 interface User {
   id: string;

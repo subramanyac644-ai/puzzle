@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { AuthResponse } from '@core-hubble/shared/utils';
-import { API_BASE_URL } from '@core-hubble/shared/utils';
-import { useAuth } from '@core-hubble/shared/context';
+import { AuthResponse } from '@core-hubble/utils';
+import { API_BASE_URL } from '@core-hubble/utils';
+import { useAuth } from '@core-hubble/context';
 
 
 const Login: React.FC = () => {
@@ -88,7 +88,7 @@ const Login: React.FC = () => {
           </button>
         </form>
         <div className="auth-footer">
-          <p>Don't have an account? <Link href="/register">Register here</Link></p>
+          <p>Don&apos;t have an account? <Link href="/register">Register here</Link></p>
           <Link href="/" className="back-link">← Back to home</Link>
         </div>
       </div>

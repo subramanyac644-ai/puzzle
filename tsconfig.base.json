@@ -15,10 +15,10 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@core-hubble/shared/prisma": ["libs/shared/prisma/src/index.ts"],
-      "@core-hubble/shared/auth": ["libs/shared/auth/src/index.ts"],
-      "@core-hubble/shared/utils": ["libs/shared/utils/src/index.ts"],
-      "@core-hubble/shared/context": ["libs/shared/context/src/index.ts"]
+      "@core-hubble/prisma": ["libs/prisma/src/index.ts"],
+      "@core-hubble/auth": ["libs/auth/src/index.ts"],
+      "@core-hubble/utils": ["libs/utils/src/index.ts"],
+      "@core-hubble/context": ["libs/context/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

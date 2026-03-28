@@ -19,10 +19,10 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["src/*"],
-      "@core-hubble/shared/prisma": ["../../libs/shared/prisma/src/index.ts"],
-      "@core-hubble/shared/auth": ["../../libs/shared/auth/src/index.ts"],
-      "@core-hubble/shared/utils": ["../../libs/shared/utils/src/index.ts"],
-      "@core-hubble/shared/context": ["../../libs/shared/context/src/index.ts"]
+      "@core-hubble/prisma": ["../../libs/prisma/src/index.ts"],
+      "@core-hubble/auth": ["../../libs/auth/src/index.ts"],
+      "@core-hubble/utils": ["../../libs/utils/src/index.ts"],
+      "@core-hubble/context": ["../../libs/context/src/index.ts"]
     }
   },
   "include": [
@@ -31,5 +31,5 @@
     "src/**/*.tsx",
     ".next/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", ".next"]
 }

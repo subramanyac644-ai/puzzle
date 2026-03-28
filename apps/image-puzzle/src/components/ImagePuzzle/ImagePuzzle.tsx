@@ -7,9 +7,9 @@ import type { TileData } from './utils';
 import confetti from 'canvas-confetti';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
-import { API_BASE_URL } from '@core-hubble/shared/utils';
+import { API_BASE_URL } from '@core-hubble/utils';
 
-import { useAuth } from '@core-hubble/shared/context';
+import { useAuth } from '@core-hubble/context';
 
 
 const ACCEPTED_TYPES = ['image/jpeg', 'image/png', 'image/webp'];

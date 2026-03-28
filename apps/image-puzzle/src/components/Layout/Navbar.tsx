@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { useAuth } from '@core-hubble/shared/context';
+import { useAuth } from '@core-hubble/context';
 
 const Navbar: React.FC = () => {
   const router = useRouter();

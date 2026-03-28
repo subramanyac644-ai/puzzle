@@ -1,37 +1,20 @@
 {
+  "extends": "./tsconfig.base.json",
   "compilerOptions": {
-    "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "strict": true,
-    "noEmit": true,
-    "esModuleInterop": true,
-    "module": "esnext",
-    "moduleResolution": "bundler",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "jsx": "preserve",
-    "incremental": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
+    "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./apps/image-puzzle/src/*"],
+      "@core-hubble/prisma": ["libs/prisma/src/index.ts"],
+      "@core-hubble/auth": ["libs/auth/src/index.ts"],
+      "@core-hubble/utils": ["libs/utils/src/index.ts"],
+      "@core-hubble/context": ["libs/context/src/index.ts"]
     }
   },
   "include": [
-    "next-env.d.ts",
-    "app/**/*.ts",
-    "app/**/*.tsx",
-    "components/**/*.ts",
-    "components/**/*.tsx",
-    "lib/**/*.ts",
-    "lib/**/*.tsx",
-    "middleware.ts",
-    ".next/types/**/*.ts"
+    "apps/image-puzzle/src/**/*.ts",
+    "apps/image-puzzle/src/**/*.tsx",
+    "libs/**/*.ts",
+    "libs/**/*.tsx"
   ],
-  "exclude": ["node_modules", "apps", "libs"]
+  "exclude": ["node_modules", "tmp", "dist"]
 }

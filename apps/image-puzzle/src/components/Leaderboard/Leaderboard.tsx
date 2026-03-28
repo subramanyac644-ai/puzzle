@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import axios from 'axios';
-import { API_BASE_URL } from '@core-hubble/shared/utils';
-import { useAuth } from '@core-hubble/shared/context';
+import { API_BASE_URL } from '@core-hubble/utils';
+import { useAuth } from '@core-hubble/context';
 
 
 interface Ranking {

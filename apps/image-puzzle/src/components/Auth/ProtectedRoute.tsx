@@ -2,7 +2,7 @@
 
 import React, { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@core-hubble/shared/context';
+import { useAuth } from '@core-hubble/context';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

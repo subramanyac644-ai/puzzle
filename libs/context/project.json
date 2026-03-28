@@ -1,15 +1,15 @@
 {
-  "name": "shared-utils",
+  "name": "shared-context",
   "$schema": "../../../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "libs/shared/utils/src",
+  "sourceRoot": "libs/context/src",
   "projectType": "library",
   "tags": [],
   "targets": {
     "lint": {
-      "executor": "@nx/linter:eslint",
+      "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["libs/shared/utils/**/*.ts"]
+        "lintFilePatterns": ["libs/context/**/*.ts"]
       }
     }
   }
