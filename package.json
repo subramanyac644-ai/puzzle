@@ -9,6 +9,7 @@
     "lint": "nx lint image-puzzle",
     "prisma:generate": "prisma generate",
     "prisma:push": "prisma db push",
+    "postinstall": "prisma generate",
     "nx": "nx"
   },
   "dependencies": {
