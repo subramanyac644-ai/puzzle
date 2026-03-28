@@ -2,6 +2,13 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@core-hubble/prisma';
 import { getAuthUser } from '@core-hubble/auth';
 
+export const config = {
+  api: {
+    bodyParser: false, // Disabling bodyParser for multipart/form-data
+    responseLimit: '10mb',
+  },
+};
+
 // Helper to check for admin
 async function ensureAdmin(req: NextRequest) {
   const auth = await getAuthUser(req);
