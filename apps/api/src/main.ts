@@ -185,6 +185,25 @@ app.get('/api/leaderboard/:level', async (req, res) => {
 });
 
 // 5. Admin
+app.post('/api/user/puzzles', authenticate, upload.single('image'), async (req: AuthRequest, res) => {
+  const { level } = req.body;
+  if (!req.file || !level) return res.status(400).json({ error: 'Image and level required' });
+
+  try {
+    const base64Image = `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`;
+    const puzzle = await prisma.puzzle.create({
+      data: {
+        imageUrl: base64Image,
+        level,
+        uploadedBy: req.userId!
+      }
+    });
+    res.status(201).json(puzzle);
+  } catch (error) {
+    res.status(500).json({ error: 'Upload failed' });
+  }
+});
+
 app.post('/api/admin/puzzles', authenticate, isAdmin, upload.single('image'), async (req: AuthRequest, res) => {
   const { level } = req.body;
   if (!req.file || !level) return res.status(400).json({ error: 'Image and level required' });

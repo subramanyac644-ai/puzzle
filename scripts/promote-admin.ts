@@ -6,18 +6,15 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 async function main() {
-  console.log('Using DATABASE_URL:', process.env.DATABASE_URL?.substring(0, 20) + '...');
+  const username = 'ss';
   try {
-    const users = await prisma.user.findMany({
-      select: {
-        id: true,
-        username: true,
-        role: true,
-      }
+    const user = await prisma.user.update({
+      where: { username },
+      data: { role: 'admin' }
     });
-    console.log('Current Users:', JSON.stringify(users, null, 2));
+    console.log(`Successfully promoted ${username} to admin!`);
   } catch (err) {
-    console.error('Prisma Error:', err);
+    console.error(`Error promoting ${username}:`, err);
   }
 }
 
