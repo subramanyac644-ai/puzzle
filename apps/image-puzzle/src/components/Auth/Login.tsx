@@ -37,7 +37,10 @@ const Login: React.FC = () => {
         router.push('/dashboard');
       }, 500);
     } catch (err: any) {
-      setError(err.response?.data?.error || err.message || 'Login failed');
+      const errorMessage = err.response?.data?.details 
+        ? `${err.response.data.error}: ${err.response.data.details}`
+        : (err.response?.data?.error || err.message || 'Login failed');
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }

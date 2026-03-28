@@ -50,8 +50,10 @@ const Register: React.FC = () => {
       
       router.push('/dashboard');
     } catch (err: any) {
-      console.error('Registration error:', err);
-      setError(err.response?.data?.error || err.message || 'Registration failed');
+      const errorMessage = err.response?.data?.details 
+        ? `${err.response.data.error}: ${err.response.data.details}`
+        : (err.response?.data?.error || err.message || 'Registration failed');
+      setError(errorMessage);
     } finally {
       setIsLoading(false);
     }
