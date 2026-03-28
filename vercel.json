@@ -1,6 +1,6 @@
 {
   "buildCommand": "npx nx build image-puzzle",
-  "outputDirectory": "dist/apps/image-puzzle/.next",
+  "outputDirectory": "apps/image-puzzle/.next",
   "framework": "nextjs",
   "regions": ["bom1"]
 }
